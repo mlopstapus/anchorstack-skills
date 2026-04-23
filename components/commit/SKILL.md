@@ -43,7 +43,7 @@ Scope is optional but useful — use the module, feature, or directory name (e.g
 Format: `type(scope): short description`
 
 - Description: imperative mood, lowercase, no period, under 72 characters
-- Add a body only when the title alone doesn't convey enough — e.g. non-obvious decisions, workarounds, context a future reader would want. Separate from title with a blank line.
+- Always include a body. Explain the why — what prompted this change, any non-obvious decisions, context a future reader would want. Separate from title with a blank line.
 - Add `BREAKING CHANGE: <description>` in the footer if applicable
 
 **Examples:**
