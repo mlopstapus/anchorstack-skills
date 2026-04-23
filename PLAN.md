@@ -140,7 +140,6 @@ Going through each skill one by one to flesh out and validate.
 - [ ] `as-soc2-check`
 - [x] `as-rebuild`
 - [x] `as-type-check`
-- [ ] `as-dependency-audit`
 - [x] `as-lint`
 - [x] `as-secret-scan`
 - [x] `as-commit`
