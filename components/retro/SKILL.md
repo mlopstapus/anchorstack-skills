@@ -33,17 +33,28 @@ Group findings into three buckets:
 
 Only document things that would genuinely change how a future session goes. Skip anything already documented or too situational to generalise.
 
-## Step 3 — Update CLAUDE.md
+## Step 3 — Update project.md commands
+
+Read `.claude/anchorstack/project.md`. Look at what commands were run during the session and check whether any of these sections are missing or outdated:
+
+- `## Rebuild` — the command used to restart the local dev environment (e.g. `docker compose down && docker compose up -d`, `npm run dev`)
+- `## Type check` — the command used to run type checking (e.g. `npm run typecheck`, `pyright`, `mypy .`)
+
+If a command was used during the session that isn't recorded, add it. If a recorded command was found to be wrong during the session, correct it. Keep each entry to a single command or short sequence.
+
+These are read by `as-rebuild` and `as-type-check` so they don't have to detect or ask — keeping them accurate saves friction on every future run.
+
+## Step 4 — Update CLAUDE.md
 
 Read the existing `CLAUDE.md`. Add new entries under appropriate sections, or create new sections if needed. Do not remove existing content unless it's factually wrong.
 
 Keep additions concise — one or two lines per fact. `CLAUDE.md` is read at the start of every session so it should stay scannable.
 
-## Step 4 — Update AGENTS.md (if present)
+## Step 5 — Update AGENTS.md (if present)
 
 Check if `AGENTS.md` exists. If it does, apply the same approach — add agent-specific behavioral guidance derived from the session. If it doesn't exist, don't create it.
 
-## Step 5 — Update memory
+## Step 6 — Update memory
 
 Write new memory entries for user preferences and working style that surfaced during the session. Follow the same memory format already in use (frontmatter with `name`, `description`, `type`).
 
@@ -51,16 +62,19 @@ For corrections and feedback: save as `feedback` type memories — include the r
 
 For project-specific context: save as `project` type memories.
 
-## Step 6 — Summarise
+## Step 7 — Summarise
 
 Tell the user what was added and where:
 
 ```
-RALPH session retrospective complete.
+Retro complete.
+
+project.md — 1 update:
+  - Type check: npm run typecheck
 
 CLAUDE.md — 2 additions:
-  - This project uses `npm run typecheck`, not `tsc --noEmit`
   - Migrations live in db/migrations/, not src/db/
+  - Use pnpm, not npm
 
 Memory — 1 new entry:
   - User prefers commit messages reviewed before committing (feedback)
