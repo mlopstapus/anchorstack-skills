@@ -142,7 +142,7 @@ Going through each skill one by one to flesh out and validate.
 - [x] `as-type-check`
 - [ ] `as-dependency-audit`
 - [x] `as-lint`
-- [ ] `as-security-scan`
+- [x] `as-secret-scan`
 - [x] `as-commit`
 - [x] `as-pr`
 
