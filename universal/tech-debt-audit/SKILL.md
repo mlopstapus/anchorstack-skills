@@ -1,5 +1,5 @@
 ---
-name: tech-debt-audit
+name: anchorstack-tech-debt-audit
 version: 1.0.0
 tier: universal
 description: Codebase debt audit — scan for issues, rank by severity, produce a prioritized report.

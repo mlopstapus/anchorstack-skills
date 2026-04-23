@@ -1,5 +1,5 @@
 ---
-name: setup-finish
+name: anchorstack-setup-finish
 version: 1.0.0
 tier: setup
 description: Configure the finish pipeline — interactive component picker writes .claude/anchorstack/finish.md.

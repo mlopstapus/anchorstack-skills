@@ -1,13 +1,15 @@
 ---
-name: finish
+name: anchorstack-finish
 version: 1.0.0
 tier: configurable
+dependencies:
+  - anchorstack-setup-finish
 description: Execute the project's finish pipeline — reads .claude/anchorstack/finish.md and runs each step in order.
 ---
 
 # Finish
 
-Execute the finish pipeline configured for this project. The pipeline is defined in `.claude/anchorstack/finish.md` and is set up by running `setup-finish`.
+Execute the finish pipeline configured for this project. The pipeline is defined in `.claude/anchorstack/finish.md` and is set up by running `anchorstack-setup-finish`.
 
 ## Step 1 — Load pipeline config
 

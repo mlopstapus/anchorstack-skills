@@ -1,5 +1,5 @@
 ---
-name: soc2-check
+name: anchorstack-soc2-check
 version: 1.0.0
 tier: component
 description: SOC2 compliance scan — access controls, logging, encryption, change management, availability.

@@ -1,5 +1,5 @@
 ---
-name: ralph
+name: anchorstack-ralph
 version: 1.0.0
 tier: component
 description: Ralph Wiggum Loop — iterate on a task until it meets explicit completion criteria, not just until it feels done.

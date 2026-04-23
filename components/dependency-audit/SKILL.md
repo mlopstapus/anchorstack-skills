@@ -1,5 +1,5 @@
 ---
-name: dependency-audit
+name: anchorstack-dependency-audit
 version: 1.0.0
 tier: component
 description: Check for outdated packages and known CVEs across the project's dependency manifest.

@@ -1,5 +1,5 @@
 ---
-name: sync
+name: anchorstack-sync
 version: 1.0.0
 tier: component
 description: Pull main, rebase current branch, resolve any conflicts.

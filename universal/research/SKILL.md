@@ -1,5 +1,5 @@
 ---
-name: research
+name: anchorstack-research
 version: 1.0.0
 tier: universal
 description: BEARY-style agentic research pipeline — topic prompt to cited whitepaper.

@@ -1,5 +1,5 @@
 ---
-name: setup-project
+name: anchorstack-setup-project
 version: 1.0.0
 tier: setup
 description: Initialize a project for Anchorstack — interview, install spec-kit, write project.md.

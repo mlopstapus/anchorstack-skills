@@ -1,5 +1,5 @@
 ---
-name: architect
+name: anchorstack-architect
 version: 1.0.0
 tier: universal
 description: Solution design — explore options, evaluate tradeoffs, produce an Architecture Decision Record.

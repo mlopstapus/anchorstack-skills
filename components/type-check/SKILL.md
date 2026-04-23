@@ -1,5 +1,5 @@
 ---
-name: type-check
+name: anchorstack-type-check
 version: 1.0.0
 tier: component
 description: Run TypeScript type checking and surface errors with context.

@@ -1,5 +1,5 @@
 ---
-name: rca
+name: anchorstack-rca
 version: 1.0.0
 tier: universal
 description: Structured root cause analysis — timeline, contributing factors, root cause, corrective actions.

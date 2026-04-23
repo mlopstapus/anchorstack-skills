@@ -1,5 +1,5 @@
 ---
-name: rebuild-docker
+name: anchorstack-rebuild-docker
 version: 1.0.0
 tier: component
 description: Tear down, rebuild, and restart Docker Compose services with a health check.
