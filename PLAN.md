@@ -135,7 +135,7 @@ Going through each skill one by one to flesh out and validate.
 
 - [x] `as-finish` — working well in testing
 - [x] `as-sync`
-- [ ] `as-ralph`
+- [x] `as-retro`
 - [ ] `as-hipaa-check`
 - [ ] `as-soc2-check`
 - [ ] `as-rebuild-docker`

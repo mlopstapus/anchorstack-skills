@@ -10,7 +10,7 @@
     { "name": "as-research",         "path": "universal/research",         "tier": "universal"    },
     { "name": "as-tenants",          "path": "universal/tenants",          "tier": "universal"    },
     { "name": "as-sync",             "path": "components/sync",            "tier": "component"    },
-    { "name": "as-ralph",            "path": "components/ralph",           "tier": "component"    },
+    { "name": "as-retro",            "path": "components/retro",           "tier": "component"    },
     { "name": "as-hipaa-check",      "path": "components/hipaa-check",     "tier": "component"    },
     { "name": "as-soc2-check",       "path": "components/soc2-check",      "tier": "component"    },
     { "name": "as-rebuild-docker",   "path": "components/rebuild-docker",  "tier": "component"    },
