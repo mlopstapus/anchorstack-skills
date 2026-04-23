@@ -18,6 +18,8 @@
     { "name": "as-dependency-audit", "path": "components/dependency-audit","tier": "component"    },
     { "name": "as-lint",             "path": "components/lint",            "tier": "component"    },
     { "name": "as-security-scan",    "path": "components/security-scan",   "tier": "component"    },
+    { "name": "as-commit",           "path": "components/commit",           "tier": "component"    },
+    { "name": "as-pr",               "path": "components/pr",               "tier": "component"    },
     { "name": "as-setup-project",    "path": "setup/setup-project",        "tier": "setup"        },
     { "name": "as-finish",           "path": "configurable/finish",        "tier": "configurable" }
   ]
