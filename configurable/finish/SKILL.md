@@ -2,9 +2,7 @@
 name: anchorstack-finish
 version: 1.0.0
 tier: configurable
-dependencies:
-  - anchorstack-setup-finish
-description: Execute the project's finish pipeline — reads .claude/anchorstack/finish.md and runs each step in order.
+description: Execute the project's finish pipeline — reads .claude/anchorstack/finish.md and runs each step in order. Includes anchorstack-setup-finish.
 ---
 
 # Finish

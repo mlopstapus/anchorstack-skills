@@ -19,7 +19,6 @@
     { "name": "anchorstack-lint",             "path": "components/lint",            "tier": "component"    },
     { "name": "anchorstack-security-scan",    "path": "components/security-scan",   "tier": "component"    },
     { "name": "anchorstack-setup-project",    "path": "setup/setup-project",        "tier": "setup"        },
-    { "name": "anchorstack-setup-finish",     "path": "setup/setup-finish",         "tier": "setup"        },
-    { "name": "anchorstack-finish",           "path": "configurable/finish",        "tier": "configurable", "dependencies": ["anchorstack-setup-finish"] }
+    { "name": "anchorstack-finish",           "path": "configurable/finish",        "tier": "configurable", "includes": ["setup-finish"] }
   ]
 }
