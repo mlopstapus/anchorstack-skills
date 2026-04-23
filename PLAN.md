@@ -143,7 +143,7 @@ Going through each skill one by one to flesh out and validate.
 - [ ] `as-dependency-audit`
 - [ ] `as-lint`
 - [ ] `as-security-scan`
-- [ ] `as-commit`
+- [x] `as-commit`
 - [ ] `as-pr`
 
 ### Setup
