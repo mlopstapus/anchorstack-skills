@@ -12,10 +12,17 @@ Create a GitHub PR with a structured description and a manual smoke test checkli
 
 ## Step 1 — Gather context
 
+Detect the base branch:
+```bash
+git branch -r | grep -E 'origin/(main|master)'
+```
+
+Use `main`, fall back to `master`.
+
 Run the following:
 ```bash
-git log main..HEAD --oneline
-git diff main..HEAD --stat
+git log <base>..HEAD --oneline
+git diff <base>..HEAD --stat
 ```
 
 Also read `.claude/anchorstack/project.md` if it exists for product/stack context.
@@ -73,7 +80,7 @@ Show the full title and body to the user. Ask for approval or edits before creat
 ## Step 5 — Create the PR
 
 ```bash
-gh pr create --title "<title>" --body "<body>"
+gh pr create --title "<title>" --body "<body>" --base <base>
 ```
 
 Report the PR URL when done.
