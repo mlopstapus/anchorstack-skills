@@ -141,7 +141,7 @@ Going through each skill one by one to flesh out and validate.
 - [x] `as-rebuild`
 - [x] `as-type-check`
 - [ ] `as-dependency-audit`
-- [ ] `as-lint`
+- [x] `as-lint`
 - [ ] `as-security-scan`
 - [x] `as-commit`
 - [x] `as-pr`

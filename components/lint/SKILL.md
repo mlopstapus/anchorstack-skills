@@ -1,78 +1,87 @@
 ---
 name: as-lint
-version: 1.0.0
+version: 2.0.0
 tier: component
 status: under-review
-description: Detect and run the project linter, surface errors with context.
+description: Run the project linter, auto-fix what it can, manually fix the rest.
 ---
 
 # Lint
 
-Detect the project's linter configuration and run it.
+Run the project's linter, fix all errors, and verify they're resolved.
 
-## Step 1 — Detect linter
+## Step 1 — Find the lint command
 
-Check for linter config files in this order:
+Check `.claude/anchorstack/project.md` for a `## Lint` section with a configured command. If found, use it and skip to Step 2.
 
-| Linter | Config files |
-|--------|-------------|
-| ESLint | `.eslintrc*`, `eslint.config.*`, `eslint` in `package.json` |
-| Biome | `biome.json` |
-| Prettier (format check) | `.prettierrc*` |
-| Ruff (Python) | `ruff.toml`, `[tool.ruff]` in `pyproject.toml` |
-| Flake8 (Python) | `.flake8`, `setup.cfg` |
-| golangci-lint (Go) | `.golangci.yml` |
-| RuboCop (Ruby) | `.rubocop.yml` |
-| Clippy (Rust) | `Cargo.toml` (always available) |
+Otherwise auto-detect by checking for config files and `package.json` scripts:
 
-Also check `package.json` scripts for a `lint` script — prefer that if defined.
+| Signal | Command |
+|---|---|
+| `lint` script in `package.json` | `npm run lint` |
+| `.eslintrc*` / `eslint.config.*` | `npx eslint .` |
+| `biome.json` | `npx biome check .` |
+| `ruff.toml` / `[tool.ruff]` in `pyproject.toml` | `ruff check .` |
+| `.flake8` / `[flake8]` in `setup.cfg` | `flake8 .` |
+| `.golangci.yml` | `golangci-lint run` |
+| `.rubocop.yml` | `bundle exec rubocop` |
+| `Cargo.toml` | `cargo clippy` |
 
-## Step 2 — Run
+If nothing is detected, ask the user what command to run.
 
-Use the detected linter. If a `lint` script exists in `package.json`:
-```bash
-npm run lint
+If a command was detected or provided (not already in `project.md`), offer to save it:
+
+```markdown
+## Lint
+<command>
 ```
 
-Otherwise run the detected linter directly:
-- ESLint: `npx eslint . --ext .js,.jsx,.ts,.tsx`
-- Biome: `npx biome check .`
-- Ruff: `ruff check .`
-- golangci-lint: `golangci-lint run`
-- RuboCop: `bundle exec rubocop`
-- Clippy: `cargo clippy`
+## Step 2 — Run the linter
 
-## Step 3 — Parse and triage errors
-
-Group errors by file. For each:
-- File path and line number
-- Rule name / error code
-- Description
-- 3-line code context
-
-Distinguish between **errors** (must fix) and **warnings** (should fix).
-
-## Step 4 — Auto-fix
-
-Ask: attempt auto-fix for fixable issues?
-
-If yes:
-- ESLint: `npx eslint . --fix`
-- Biome: `npx biome check . --write`
-- Ruff: `ruff check . --fix`
-- Prettier: `npx prettier . --write`
-
-Then re-run to show what remains after auto-fix.
-
-## Step 5 — Report
+Run the command. If it passes cleanly:
 
 ```
 ✓ Lint passed — no errors
 ```
-Or:
+
+Stop here.
+
+## Step 3 — Auto-fix
+
+Run the linter's built-in auto-fixer for fixable issues:
+
+| Linter | Fix command |
+|---|---|
+| ESLint | `npx eslint . --fix` |
+| Biome | `npx biome check . --write` |
+| Ruff | `ruff check . --fix` |
+| Prettier | `npx prettier . --write` |
+| RuboCop | `bundle exec rubocop -a` |
+| Clippy | `cargo clippy --fix` |
+
+Re-run the linter after auto-fixing to see what remains.
+
+## Step 4 — Manually fix remaining errors
+
+For each remaining error that wasn't auto-fixable:
+
+1. Read the file at the reported line and understand what the rule is flagging
+2. Fix the code — follow the rule's intent, don't just suppress the warning
+3. Only use inline disable comments (`// eslint-disable-line`, `# noqa`, etc.) when the rule is genuinely wrong for this case, and add a comment explaining why
+
+Work through all remaining errors, then re-run to verify.
+
+## Step 5 — Report
+
 ```
-✗ Lint failed — N errors, M warnings
-[grouped by file with context]
-[auto-fixed: X issues]
-[remaining: Y issues requiring manual fix]
+✓ Lint passed — N auto-fixed, M manually fixed
+```
+
+Or if unresolved issues remain:
+
+```
+✗ Lint — N fixed, M unresolved
+
+Unresolved:
+  - src/thing.ts:42 — <rule>: <message> [needs review]
 ```

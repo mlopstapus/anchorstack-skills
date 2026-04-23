@@ -39,6 +39,7 @@ Read `.claude/anchorstack/project.md`. Look at what commands were run during the
 
 - `## Rebuild` — the command used to restart the local dev environment (e.g. `docker compose down && docker compose up -d`, `npm run dev`)
 - `## Type check` — the command used to run type checking (e.g. `npm run typecheck`, `pyright`, `mypy .`)
+- `## Lint` — the command used to lint the project (e.g. `npm run lint`, `ruff check .`, `golangci-lint run`)
 
 If a command was used during the session that isn't recorded, add it. If a recorded command was found to be wrong during the session, correct it. Keep each entry to a single command or short sequence.
 
