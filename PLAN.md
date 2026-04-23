@@ -134,7 +134,7 @@ Going through each skill one by one to flesh out and validate.
 ### Components
 
 - [x] `as-finish` — working well in testing
-- [ ] `as-sync`
+- [x] `as-sync`
 - [ ] `as-ralph`
 - [ ] `as-hipaa-check`
 - [ ] `as-soc2-check`
