@@ -14,35 +14,55 @@ Execute the finish pipeline for this project.
 
 Read `.claude/anchorstack/finish.md`.
 
-If the file does not exist or contains no steps, the pipeline has not been configured. Tell the user:
+If the file does not exist or contains no steps, run the setup flow below before proceeding.
 
-> The finish pipeline hasn't been set up for this project yet. Run the picker in your terminal to configure it (you can type `! <command>` to run it in this session):
->
-> ```bash
-> node .claude/skills/scripts/finish-picker.js
-> ```
->
-> If that path isn't found:
-> ```bash
-> node $(npm root -g)/anchorstack-skills/scripts/finish-picker.js
-> ```
->
-> The picker will ask what you want in your pipeline and write the config. Then run `/finish` again.
+### Setup flow (first run only)
 
-Stop here — do not proceed until the file exists with steps configured.
+Discover available components by listing the `SKILL.md` files under `.claude/skills/components/`. Read the `name` and `description` frontmatter from each.
+
+Present them to the user:
+
+```
+The finish pipeline hasn't been configured yet. Here are the available components:
+
+  - as-sync            Pull main and rebase current branch
+  - as-hipaa-check     HIPAA compliance check
+  - as-lint            ESLint
+  - as-type-check      TypeScript type checking
+  ...
+
+Which do you want to include? You can also add custom shell commands (e.g. npm test, docker compose restart).
+```
+
+Take their response, confirm the order, then write `.claude/anchorstack/finish.md`:
+
+```markdown
+# Finish Pipeline
+
+This file is managed by as-finish. Re-run /as-finish and choose "reconfigure" to update it.
+
+---
+
+steps:
+  - invoke: as-sync
+  - invoke: as-lint
+  - run: npm test
+```
+
+Confirm what was written, then continue to Step 2.
 
 ## Step 2 — Show pipeline
 
-Print the steps before running:
+Print the steps that will run:
 
 ```
 Finish pipeline (N steps):
-  1. invoke: sync
-  2. invoke: hipaa-check
+  1. invoke: as-sync
+  2. invoke: as-lint
   3. run: npm test
 ```
 
-Ask: proceed?
+Ask: proceed? (Also offer "reconfigure" to redo the setup flow.)
 
 ## Step 3 — Execute each step
 
@@ -70,8 +90,8 @@ On success:
 ```
 ✓ Finish pipeline complete — all N steps passed
 
-  1. ✓ sync
-  2. ✓ hipaa-check
+  1. ✓ as-sync
+  2. ✓ as-lint
   3. ✓ npm test
 ```
 
@@ -79,12 +99,12 @@ On failure:
 ```
 ✗ Finish pipeline failed at step N
 
-  1. ✓ sync
-  2. ✗ hipaa-check — <reason>
+  1. ✓ as-sync
+  2. ✗ as-lint — 3 errors found (see above)
   3. — npm test (skipped)
 ```
 
 ## Notes
 
 - Read `.claude/anchorstack/project.md` before starting so invoked skills have project context
-- To reconfigure the pipeline, re-run the picker script and then `/finish` again
+- To reconfigure, run `/as-finish` and respond "reconfigure" at the proceed prompt
