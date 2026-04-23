@@ -1,51 +1,77 @@
 ---
 name: as-sync
-version: 1.0.0
+version: 1.1.0
 tier: component
 status: under-review
-description: Pull main, rebase current branch, resolve any conflicts.
+description: Stash, fetch, rebase on main, auto-resolve conflicts, push.
 ---
 
 # Sync
 
-Pull the latest main and rebase the current branch on top of it.
+Bring the current branch up to date with main and push.
 
 ## Steps
 
-1. **Check working tree is clean**
+1. **Stash any uncommitted changes**
+
    ```bash
-   git status --porcelain
+   git stash push -m "as-sync auto-stash"
    ```
-   If there are uncommitted changes, ask the user: stash them first, or abort. Do not proceed with a dirty tree.
+
+   Note whether anything was stashed so you can pop it at the end.
 
 2. **Fetch latest**
+
    ```bash
    git fetch origin
    ```
 
 3. **Identify the main branch**
-   Check for `main` first, then `master`:
+
    ```bash
    git branch -r | grep -E 'origin/(main|master)'
    ```
 
+   Use `main`, fall back to `master`.
+
 4. **Rebase**
+
    ```bash
    git rebase origin/main
    ```
-   (or `origin/master` if that's what the repo uses)
 
-5. **Handle conflicts**
-   If rebase stops with conflicts:
-   - List the conflicting files
-   - For each conflict, read both versions and the base
-   - Resolve by applying the logical intent of both sides
-   - After resolving: `git add <file>` and `git rebase --continue`
-   - If a conflict is ambiguous, pause and ask the user to decide
+5. **Auto-resolve conflicts**
 
-6. **Report**
-   On success:
+   If the rebase stops with conflicts, resolve each one without asking:
+
+   - Read the conflicting file, both sides, and the common ancestor
+   - Read the relevant commit messages and diffs from both branches to understand intent (`git log`, `git show`)
+   - Apply the resolution that preserves the intent of both sides — prefer the incoming change when it clearly supersedes the local one, preserve local when it's additive
+   - `git add <file>` after resolving each file
+   - `git rebase --continue`
+
+   Only pause and ask the user if a conflict is genuinely ambiguous after reading the full context — e.g. two distinct rewrites of the same logic with no clear winner.
+
+6. **Push**
+
+   ```bash
+   git push --force-with-lease
    ```
-   ✓ Sync complete — rebased on origin/main (<N> commits ahead)
+
+7. **Pop stash**
+
+   If changes were stashed in step 1:
+
+   ```bash
+   git stash pop
    ```
-   On failure, report exactly what failed and what state the repo is in.
+
+   If the pop produces conflicts, resolve them the same way as step 5.
+
+8. **Report**
+
+   ```
+   ✓ Sync complete — rebased on origin/main (<N> commits ahead), pushed
+   ```
+
+   If anything was stashed and popped, note that too. On failure, report exactly what failed and the current repo state.
