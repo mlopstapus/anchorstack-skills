@@ -1,52 +1,78 @@
 ---
 name: as-type-check
-version: 1.0.0
+version: 2.0.0
 tier: component
 status: under-review
-description: Run TypeScript type checking and surface errors with context.
+description: Run type checking for any language, auto-fix errors, and report results.
 ---
 
 # Type Check
 
-Run TypeScript type checking and triage any errors.
+Run the project's type checker, fix any errors, and verify they're resolved.
 
-## Steps
+## Step 1 — Find the type check command
 
-1. **Detect TypeScript config**
-   Look for `tsconfig.json` in the project root or common locations (`src/tsconfig.json`, `apps/*/tsconfig.json` in monorepos).
+Check `.claude/anchorstack/project.md` for a `## Type check` section with a configured command. If found, use it and skip to Step 2.
 
-   If no `tsconfig.json` found, report and stop.
+Otherwise auto-detect:
 
-2. **Run type checker**
-   ```bash
-   npx tsc --noEmit
-   ```
-   Or if a `typecheck` script is defined in `package.json`:
-   ```bash
-   npm run typecheck
-   ```
+| Signal | Tool | Command |
+|---|---|---|
+| `tsconfig.json` present | TypeScript | `npm run typecheck` if script exists, else `npx tsc --noEmit` |
+| `pyrightconfig.json` or `pyproject.toml` with `[tool.pyright]` | Pyright | `pyright` |
+| `mypy.ini` or `setup.cfg` with `[mypy]` | mypy | `mypy .` |
+| `.flowconfig` | Flow | `npx flow check` |
+| `Cargo.toml` | Rust | `cargo check` |
+| `go.mod` | Go | `go vet ./...` |
 
-3. **Parse output**
-   If errors are present, group them by file. For each error:
-   - Show the file path and line number
-   - Show the error message
-   - Show the surrounding code context (3 lines before and after)
-   - Suggest a fix if the error is a common pattern
+If nothing is detected, ask the user what command to run.
 
-4. **Common error patterns and fixes**
-   - `Type 'X' is not assignable to type 'Y'` — check the type definition or add a type assertion
-   - `Property 'X' does not exist on type 'Y'` — check spelling, check that the type includes the property
-   - `Object is possibly 'null' or 'undefined'` — add a null check or non-null assertion with a comment explaining why it's safe
-   - `Cannot find module 'X'` — check the import path and tsconfig `paths`
+If a command was detected or provided (not already in `project.md`), offer to save it:
 
-5. **Report**
-   ```
-   ✓ Type check passed — no errors
-   ```
-   Or:
-   ```
-   ✗ Type check failed — N errors in M files
-   [grouped errors with context]
-   ```
+```markdown
+## Type check
+<command>
+```
 
-   If errors exist, ask: fix them now, or just report?
+## Step 2 — Run the type checker
+
+Run the command and capture output. If it passes cleanly:
+
+```
+✓ Type check passed — no errors
+```
+
+Stop here.
+
+## Step 3 — Fix errors
+
+For each error in the output:
+
+1. Read the file and the surrounding code at the reported line
+2. Understand what the type system is complaining about and why
+3. Fix the code — prefer correct types over type assertions or suppression comments. Only use assertions/ignores when the type system genuinely can't express the invariant (and add a comment explaining why).
+4. Move on to the next error
+
+Work through all errors before re-running — fixing one error often resolves others downstream.
+
+## Step 4 — Re-run and verify
+
+Run the type checker again. If errors remain, repeat Step 3. If the same error persists after two fix attempts, stop and report it with context — it likely needs a design decision or more information.
+
+## Step 5 — Report
+
+```
+✓ Type check passed — N errors fixed
+
+  - src/api/users.ts:42 — Property 'id' missing on UserInput type
+  - src/lib/db.ts:18 — Argument type mismatch in query helper
+```
+
+Or if unresolved errors remain:
+
+```
+✗ Type check — N fixed, M unresolved
+
+Unresolved:
+  - src/complex/thing.ts:99 — <error> [needs review]
+```
