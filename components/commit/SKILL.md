@@ -1,6 +1,6 @@
 ---
 name: as-commit
-version: 1.0.0
+version: 1.1.0
 tier: component
 status: under-review
 description: Stage and commit changes using conventional commits format.
@@ -8,7 +8,7 @@ description: Stage and commit changes using conventional commits format.
 
 # Commit
 
-Stage and commit changes with a conventional commit message derived from the diff.
+Generate a conventional commit message from the diff, get approval, then commit.
 
 ## Step 1 — Check for changes
 
@@ -16,14 +16,12 @@ Run `git status` and `git diff`. If there is nothing to commit, tell the user an
 
 ## Step 2 — Review the diff
 
-Run `git diff HEAD` to see all unstaged and staged changes. Use this to understand:
-- What changed (files, logic, config, tests, docs)
-- Why it likely changed (based on context)
-- The scope (which area of the codebase)
+Run `git diff HEAD` to understand what changed and why:
+- What files and logic changed
+- Which area of the codebase (scope)
+- Whether it's a single coherent change or multiple concerns mixed together
 
-## Step 3 — Determine commit type
-
-Pick the type that best fits the change:
+## Step 3 — Determine type and scope
 
 | Type | When to use |
 |------|-------------|
@@ -38,30 +36,35 @@ Pick the type that best fits the change:
 | `style` | Formatting, whitespace (no logic change) |
 | `revert` | Reverting a previous commit |
 
+Scope is optional but useful — use the module, feature, or directory name (e.g. `auth`, `api`, `finish`).
+
 ## Step 4 — Draft the message
 
 Format: `type(scope): short description`
 
-Rules:
-- Scope is optional but recommended — use the module, feature, or directory name (e.g. `auth`, `api`, `finish`)
-- Description is imperative mood, lowercase, no period, under 72 characters (e.g. `add retry logic to sync step`)
-- Add a body if the change needs context that isn't obvious from the title — separate with a blank line
+- Description: imperative mood, lowercase, no period, under 72 characters
+- Add a body only when the title alone doesn't convey enough — e.g. non-obvious decisions, workarounds, context a future reader would want. Separate from title with a blank line.
 - Add `BREAKING CHANGE: <description>` in the footer if applicable
 
-Show the draft message to the user and ask for approval or edits before committing.
+**Examples:**
+- `feat(auth): add Google OAuth login`
+- `fix(api): handle null response from payment provider`
+- `refactor(finish): simplify step execution loop`
 
-## Step 5 — Stage and commit
+## Step 5 — Ask for approval
 
-Stage all modified tracked files:
+Show the draft message and ask the user to approve or edit it before proceeding. Don't commit until they confirm.
+
+## Step 6 — Stage and commit
+
+Stage all changes including untracked files:
 ```bash
-git add -u
+git add -A
 ```
-
-If there are untracked files that should be included, ask the user before staging them.
 
 Commit with the approved message:
 ```bash
 git commit -m "<message>"
 ```
 
-Report the resulting commit hash and message.
+Report the resulting commit hash and one-line message.
