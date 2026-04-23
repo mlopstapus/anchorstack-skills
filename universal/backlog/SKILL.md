@@ -1,7 +1,8 @@
 ---
-name: anchorstack-backlog
+name: as-backlog
 version: 1.0.0
 tier: universal
+status: under-review
 description: Generate a prioritized product backlog with user stories, acceptance criteria, and effort estimates.
 ---
 

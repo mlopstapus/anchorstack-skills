@@ -1,7 +1,8 @@
 ---
-name: anchorstack-setup-project
+name: as-setup-project
 version: 1.0.0
 tier: setup
+status: under-review
 description: Initialize a project for Anchorstack — interview, install spec-kit, write project.md.
 ---
 
@@ -124,5 +125,5 @@ Create `.claude/anchorstack/manifest.json`:
 
 Tell the user:
 - What was written and where
-- That they should run `setup-finish` next to configure the finish pipeline
+- That they should run `/finish` next — it will prompt them to configure the pipeline on first run
 - That they should run `tenants` to generate spec-kit constitution tenants

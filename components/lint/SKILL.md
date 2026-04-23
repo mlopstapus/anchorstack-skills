@@ -1,7 +1,8 @@
 ---
-name: anchorstack-lint
+name: as-lint
 version: 1.0.0
 tier: component
+status: under-review
 description: Detect and run the project linter, surface errors with context.
 ---
 

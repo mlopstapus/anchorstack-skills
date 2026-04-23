@@ -5,7 +5,7 @@
  * optionally add custom shell commands, then outputs YAML to stdout.
  */
 import * as p from '@clack/prompts';
-import { readdirSync, readFileSync, existsSync } from 'fs';
+import { readdirSync, readFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { dump } from 'js-yaml';
@@ -100,10 +100,13 @@ async function main() {
   }
 
   const yaml = dump({ steps: ordered }, { lineWidth: -1 });
+  const outDir = join(process.cwd(), '.claude', 'anchorstack');
+  const outPath = join(outDir, 'finish.md');
 
-  p.outro('Pipeline configured. Writing finish.md...');
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(outPath, `# Finish Pipeline\n\nThis file is managed by setup-finish. Re-run the picker to reconfigure.\nEdit manually only for quick one-off changes.\n\n---\n\n${yaml}`, 'utf8');
 
-  process.stdout.write('\n---FINISH_YAML---\n' + yaml + '---END_YAML---\n');
+  p.outro(`Pipeline written to .claude/anchorstack/finish.md — run /finish to execute it.`);
 }
 
 main().catch(err => { console.error(err); process.exit(1); });

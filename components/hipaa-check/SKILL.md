@@ -1,7 +1,8 @@
 ---
-name: anchorstack-hipaa-check
+name: as-hipaa-check
 version: 1.0.0
 tier: component
+status: under-review
 description: HIPAA compliance scan — PHI exposure, audit trails, encryption, access controls.
 ---
 

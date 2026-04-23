@@ -1,7 +1,8 @@
 ---
-name: anchorstack-sync
+name: as-sync
 version: 1.0.0
 tier: component
+status: under-review
 description: Pull main, rebase current branch, resolve any conflicts.
 ---
 

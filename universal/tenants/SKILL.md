@@ -1,7 +1,8 @@
 ---
-name: anchorstack-tenants
+name: as-tenants
 version: 1.0.0
 tier: universal
+status: under-review
 description: Generate spec-kit constitution tenants for a project.
 ---
 

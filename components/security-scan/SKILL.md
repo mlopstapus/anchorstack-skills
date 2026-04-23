@@ -1,7 +1,8 @@
 ---
-name: anchorstack-security-scan
+name: as-security-scan
 version: 1.0.0
 tier: component
+status: under-review
 description: OWASP-based security scan — secrets detection, injection vulnerabilities, common misconfigurations.
 ---
 
