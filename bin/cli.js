@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 import * as p from '@clack/prompts';
-import { readFileSync, writeFileSync, existsSync, createReadStream } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { createHash } from 'crypto';
 import { execSync } from 'child_process';
-import { join, resolve } from 'path';
+import { join } from 'path';
 import chalk from 'chalk';
 
 const MANIFEST_PATH = '.claude/anchorstack/manifest.json';
 const SKILLS_JSON = new URL('../skills.json', import.meta.url).pathname;
+const GITHUB_RAW = 'https://raw.githubusercontent.com/mlopstapus/anchorstack-skills/main';
 
 function loadSkillsJson() {
   return JSON.parse(readFileSync(SKILLS_JSON, 'utf8'));
@@ -91,46 +92,52 @@ async function runList() {
 }
 
 async function runUpdate() {
-  const { skills: registry, version } = loadSkillsJson();
+  const { skills: registry } = loadSkillsJson();
   const manifest = loadManifest();
-  let updated = 0;
+  manifest.skills ??= {};
 
   p.intro(chalk.bold('Updating Anchorstack Skills'));
 
+  let updated = 0;
+  let skipped = 0;
+  let failed = 0;
+
   for (const skill of registry) {
-    const entry = manifest.skills?.[skill.name];
+    const entry = manifest.skills[skill.name];
+
     if (entry?.ejected) {
       p.log.warn(`Skipping ${skill.name} (ejected)`);
+      skipped++;
       continue;
     }
 
     const installPath = skillInstallPath(skill.path);
     const skillMd = join(installPath, 'SKILL.md');
-    const currentHash = hashFile(skillMd);
 
-    if (entry && currentHash && currentHash !== entry.hash) {
-      const action = await p.select({
-        message: `${chalk.yellow(skill.name)} has local modifications. What do you want to do?`,
-        options: [
-          { value: 'keep',     label: 'Keep local version' },
-          { value: 'upstream', label: 'Take upstream version' },
-          { value: 'eject',    label: 'Eject (skip all future updates)' },
-        ],
-      });
-      if (p.isCancel(action)) break;
-      if (action === 'eject') {
-        manifest.skills[skill.name] = { ...entry, ejected: true };
-        saveManifest(manifest);
-        p.log.info(`Ejected ${skill.name}`);
-      }
-      continue;
+    try {
+      const res = await fetch(`${GITHUB_RAW}/${skill.path}/SKILL.md`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const content = await res.text();
+
+      mkdirSync(installPath, { recursive: true });
+      writeFileSync(skillMd, content, 'utf8');
+
+      manifest.skills[skill.name] = {
+        ...entry,
+        hash: hashFile(skillMd),
+        updatedAt: new Date().toISOString(),
+      };
+
+      p.log.success(`Updated ${skill.name}`);
+      updated++;
+    } catch (err) {
+      p.log.error(`Failed to update ${skill.name}: ${err.message}`);
+      failed++;
     }
-
-    p.log.success(`${skill.name} is up to date`);
-    updated++;
   }
 
-  p.outro(`Done. ${updated} skill(s) checked.`);
+  saveManifest(manifest);
+  p.outro(`Done. ${updated} updated, ${skipped} skipped${failed ? `, ${failed} failed` : ''}.`);
 }
 
 async function runEject(skillName) {
