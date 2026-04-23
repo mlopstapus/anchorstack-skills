@@ -1,0 +1,25 @@
+{
+  "name": "anchorstack-skills",
+  "version": "1.0.0",
+  "installPath": ".claude/skills",
+  "skills": [
+    { "name": "rca",              "path": "universal/rca",              "tier": "universal"   },
+    { "name": "architect",        "path": "universal/architect",        "tier": "universal"   },
+    { "name": "tech-debt-audit",  "path": "universal/tech-debt-audit",  "tier": "universal"   },
+    { "name": "backlog",          "path": "universal/backlog",          "tier": "universal"   },
+    { "name": "research",         "path": "universal/research",         "tier": "universal"   },
+    { "name": "tenants",          "path": "universal/tenants",          "tier": "universal"   },
+    { "name": "sync",             "path": "components/sync",            "tier": "component"   },
+    { "name": "ralph",            "path": "components/ralph",           "tier": "component"   },
+    { "name": "hipaa-check",      "path": "components/hipaa-check",     "tier": "component"   },
+    { "name": "soc2-check",       "path": "components/soc2-check",      "tier": "component"   },
+    { "name": "rebuild-docker",   "path": "components/rebuild-docker",  "tier": "component"   },
+    { "name": "type-check",       "path": "components/type-check",      "tier": "component"   },
+    { "name": "dependency-audit", "path": "components/dependency-audit","tier": "component"   },
+    { "name": "lint",             "path": "components/lint",            "tier": "component"   },
+    { "name": "security-scan",    "path": "components/security-scan",   "tier": "component"   },
+    { "name": "setup-project",    "path": "setup/setup-project",        "tier": "setup"       },
+    { "name": "setup-finish",     "path": "setup/setup-finish",         "tier": "setup"       },
+    { "name": "finish",           "path": "configurable/finish",        "tier": "configurable"}
+  ]
+}
