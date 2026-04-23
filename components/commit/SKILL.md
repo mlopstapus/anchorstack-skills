@@ -57,10 +57,12 @@ Show the draft message and ask the user to approve or edit it before proceeding.
 
 ## Step 6 — Stage and commit
 
-Stage all changes including untracked files:
+Stage tracked changes:
 ```bash
-git add -A
+git add -u
 ```
+
+If there are untracked files, list them and ask the user which (if any) to include before committing.
 
 Commit with the approved message:
 ```bash
