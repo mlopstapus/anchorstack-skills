@@ -144,7 +144,7 @@ Going through each skill one by one to flesh out and validate.
 - [ ] `as-lint`
 - [ ] `as-security-scan`
 - [x] `as-commit`
-- [ ] `as-pr`
+- [x] `as-pr`
 
 ### Setup
 
