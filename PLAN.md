@@ -139,7 +139,7 @@ Going through each skill one by one to flesh out and validate.
 - [ ] `as-hipaa-check`
 - [ ] `as-soc2-check`
 - [x] `as-rebuild`
-- [ ] `as-type-check`
+- [x] `as-type-check`
 - [ ] `as-dependency-audit`
 - [ ] `as-lint`
 - [ ] `as-security-scan`
