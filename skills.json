@@ -13,7 +13,7 @@
     { "name": "as-retro",            "path": "components/retro",           "tier": "component"    },
     { "name": "as-hipaa-check",      "path": "components/hipaa-check",     "tier": "component"    },
     { "name": "as-soc2-check",       "path": "components/soc2-check",      "tier": "component"    },
-    { "name": "as-rebuild-docker",   "path": "components/rebuild-docker",  "tier": "component"    },
+    { "name": "as-rebuild",          "path": "components/rebuild",         "tier": "component"    },
     { "name": "as-type-check",       "path": "components/type-check",      "tier": "component"    },
     { "name": "as-dependency-audit", "path": "components/dependency-audit","tier": "component"    },
     { "name": "as-lint",             "path": "components/lint",            "tier": "component"    },

@@ -138,7 +138,7 @@ Going through each skill one by one to flesh out and validate.
 - [x] `as-retro`
 - [ ] `as-hipaa-check`
 - [ ] `as-soc2-check`
-- [ ] `as-rebuild-docker`
+- [x] `as-rebuild`
 - [ ] `as-type-check`
 - [ ] `as-dependency-audit`
 - [ ] `as-lint`
