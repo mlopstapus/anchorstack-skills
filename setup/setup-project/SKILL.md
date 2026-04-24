@@ -1,129 +1,187 @@
 ---
 name: as-setup-project
-version: 1.0.0
+version: 2.0.0
 tier: setup
 status: under-review
-description: Initialize a project for Anchorstack — interview, install spec-kit, write project.md.
+description: Initialize a project for anchorstack skills — auto-detect git config, stack, and commands, then interview to fill gaps. Writes .claude/anchorstack/project.md (read by all other skills) and bootstraps CLAUDE.md if none exists. Run with as-setup-project at project start, or re-run to update config.
 ---
 
 # Setup Project
 
-Run this once when starting work on a new project. It captures the project context, installs spec-kit, and writes `.claude/anchorstack/project.md` which all other skills read for context.
+Run once per project to establish the persistent config that all anchorstack skills read. This saves every future skill invocation from re-detecting things the project already knows about itself.
 
-## Step 1 — Interview
+Can be re-run at any time to update specific fields.
 
-Ask the user the following questions. Take notes as you go.
+---
 
-1. **Project name:** What is this project called?
-2. **What does it do?** 2–3 sentence description of the product or service.
-3. **Stack:** What languages, frameworks, and key libraries are in use?
-4. **Project type:** Which best describes it?
-   - SaaS web app
-   - Healthcare / clinical system
-   - Automation / workflow system
-   - Internal tooling
-   - API / platform service
-   - Mobile app
-   - Data pipeline
-   - Other (describe)
-5. **Compliance requirements:** Does this project handle any of the following?
+## Step 1 — Check existing state
+
+Check if `.claude/anchorstack/project.md` already exists.
+
+If it does, read it and show the user the current values. Ask: update specific fields, or regenerate from scratch?
+
+If updating, only re-run the relevant steps and preserve the rest.
+
+---
+
+## Step 2 — Auto-detect
+
+Run these before asking the user anything. The goal is to arrive at the interview with most fields already filled in.
+
+**Git provider:**
+```bash
+git remote -v
+```
+- Contains `github.com` → GitHub
+- Contains `gitlab.com` → GitLab
+- Contains `bitbucket.org` → Bitbucket
+- No remote or unrecognized → unknown (ask)
+
+**Base branch:**
+```bash
+git branch -a
+```
+Prefer `main` → `master` → `develop`. If the repo has a clear default branch, use it. If unclear, ask.
+
+**Stack:**
+Check for indicator files (read the top-level one to get framework/library details):
+
+| File | Stack signal |
+|---|---|
+| `package.json` | Node.js — read for framework hints (next, react, express, fastify, etc.) |
+| `go.mod` | Go — read for module name |
+| `requirements.txt` / `pyproject.toml` / `Pipfile` | Python — check for Django, FastAPI, Flask |
+| `Gemfile` | Ruby — check for Rails |
+| `Cargo.toml` | Rust |
+| `pom.xml` / `build.gradle` | Java / Kotlin |
+| `composer.json` | PHP |
+
+Also note presence of `docker-compose.yml` (Docker-based local env) and `terraform/` (infra-as-code).
+
+Form a one-line stack description. Example: `Next.js + TypeScript + PostgreSQL + Docker`.
+
+**Commands:**
+Detect using the same logic as `as-rebuild`, `as-type-check`, `as-lint`:
+
+- **Rebuild:** `docker-compose.yml` → `docker compose up -d`; `package.json` scripts → check for `dev` or `start`; `Makefile` → check for a `dev` target; `Procfile` → `foreman start`
+- **Type check:** `tsconfig.json` → `npx tsc --noEmit`; `pyrightconfig.json` → `pyright`; `mypy.ini` → `mypy .`; `go.mod` → `go vet ./...`; `Cargo.toml` → `cargo check`
+- **Lint:** `lint` in package.json scripts → `npm run lint`; `.eslintrc*` → `npx eslint .`; `biome.json` → `npx biome check .`; `ruff.toml` → `ruff check .`; `.golangci.yml` → `golangci-lint run`; `.rubocop.yml` → `bundle exec rubocop`
+- **Test:** `test` in package.json scripts → `npm test`; `go.mod` → `go test ./...`; `pytest.ini` or `[tool.pytest.ini_options]` → `pytest`; `Cargo.toml` → `cargo test`
+
+---
+
+## Step 3 — Interview
+
+Show what was auto-detected. Only ask about what's missing or needs confirmation. Keep this to under a minute for a standard project.
+
+**Questions to ask:**
+
+1. **Stack** — "I detected [X] — does this look right? Anything to add (database, cloud provider, key services)?"
+
+2. **Compliance scope** — "Is this project in scope for any compliance frameworks?" Specifically ask about:
    - HIPAA (protected health information)
    - SOC2 (security/availability controls)
    - GDPR (EU personal data)
    - PCI DSS (payment card data)
-   - None / unknown
-6. **Team size:** How many engineers work on this codebase?
-7. **Key constraints:** What are the hard constraints? (deadline, legacy systems, must-use libraries, etc.)
-8. **Known problem areas:** Any areas of the codebase already known to be fragile or in need of work?
-9. **CI/CD setup:** What does the deploy pipeline look like?
-10. **Testing approach:** What kinds of tests exist (unit, integration, e2e)? What's the coverage situation?
+   
+   This affects which checks `as-finish` includes in the pipeline.
 
-## Step 2 — Install spec-kit
+3. **Any commands that couldn't be detected** — Only ask for commands where detection failed. "I couldn't detect a [rebuild/lint/etc.] command — what do you use?"
 
-Check if `specify` is already available:
-```bash
-specify --version
-```
+Don't ask about git provider or base branch if they were clearly detected. Don't re-ask about things already confirmed.
 
-If not installed, detect the available installer:
-```bash
-which uv && echo "uv available" || which pipx && echo "pipx available"
-```
+---
 
-Install using the available tool:
-```bash
-# uv (preferred)
-uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+## Step 4 — Write project.md
 
-# pipx (fallback)
-pipx install git+https://github.com/github/spec-kit.git
-```
-
-If neither `uv` nor `pipx` is available, tell the user to install `uv` first:
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
-Then initialize spec-kit in the project:
-```bash
-specify init
-```
-
-## Step 3 — Write project.md
-
-Create `.claude/anchorstack/` if it doesn't exist, then write `.claude/anchorstack/project.md`:
+Create `.claude/anchorstack/` if it doesn't exist. Write `.claude/anchorstack/project.md`:
 
 ```markdown
-# Project Context
+# Project Config
 
-## Name
-<project name>
-
-## Description
-<2–3 sentence description>
+## Git
+provider: <github | gitlab | bitbucket | other>
+base_branch: <main | master | develop>
 
 ## Stack
-<languages, frameworks, key libraries>
-
-## Project type
-<type from interview>
+<one to two sentences describing the tech stack>
 
 ## Compliance
-<list of applicable compliance frameworks, or "None">
+hipaa: <true | false>
+soc2: <true | false>
+gdpr: <true | false>
+pci: <true | false>
 
-## Team
-<team size>
+## Rebuild
+<command, or leave blank>
 
-## Key constraints
-<constraints from interview>
+## Type check
+<command, or leave blank>
 
-## Known problem areas
-<known fragile areas>
+## Lint
+<command, or leave blank>
 
-## CI/CD
-<pipeline description>
-
-## Testing
-<testing approach and coverage situation>
-
-## Last updated
-<YYYY-MM-DD>
+## Test
+<command, or leave blank>
 ```
 
-## Step 4 — Initialize manifest
+Leave any command blank if it couldn't be detected and the user didn't provide one. Skills detect and fill these in on first use via `as-retro`.
 
-Create `.claude/anchorstack/manifest.json`:
-```json
-{
-  "version": "1.0.0",
-  "installedAt": "<ISO timestamp>",
-  "skills": {}
-}
+---
+
+## Step 5 — Bootstrap CLAUDE.md
+
+Check if `CLAUDE.md` exists at the project root.
+
+**If it doesn't exist**, create a starter:
+
+```markdown
+# <Project Name>
+
+<Stack — one sentence>
+
+## Key commands
+
+| Command | Run |
+|---------|-----|
+| Rebuild | `<command>` |
+| Type check | `<command>` |
+| Lint | `<command>` |
+| Test | `<command>` |
+
+## Notes
+
+<!-- Project-specific notes. as-retro will add to this over time. -->
 ```
 
-## Step 5 — Confirm
+Use the project name from `package.json` (`name` field), `go.mod` (module path), `Cargo.toml`, or the repo directory name — whichever is most readable.
 
-Tell the user:
-- What was written and where
-- That they should run `/finish` next — it will prompt them to configure the pipeline on first run
-- That they should run `tenants` to generate spec-kit constitution tenants
+Omit any command rows where no command was detected.
+
+**If CLAUDE.md already exists**, don't overwrite it. Scan it for a commands section — if there isn't one, offer to append the commands table. Otherwise leave it alone.
+
+---
+
+## Step 6 — Report
+
+Summarise what was written:
+
+```
+Setup complete.
+
+.claude/anchorstack/project.md
+  provider:     github
+  base_branch:  main
+  stack:        Next.js + TypeScript + PostgreSQL + Docker
+  compliance:   hipaa=false  soc2=false  gdpr=false  pci=false
+  rebuild:      docker compose up -d
+  type-check:   npx tsc --noEmit
+  lint:         npm run lint
+  test:         npm test
+
+CLAUDE.md — created ✓
+
+Run /as-finish to configure your workflow pipeline.
+```
+
+If any commands are blank, note them: "Rebuild command not detected — run as-rebuild once to detect and save it."

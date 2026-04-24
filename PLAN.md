@@ -136,8 +136,8 @@ Going through each skill one by one to flesh out and validate.
 - [x] `as-finish` — working well in testing
 - [x] `as-sync`
 - [x] `as-retro`
-- [ ] `as-hipaa-check`
-- [ ] `as-soc2-check`
+- [x] `as-hipaa-check`
+- [x] `as-soc2-check`
 - [x] `as-rebuild`
 - [x] `as-type-check`
 - [x] `as-lint`
@@ -147,4 +147,4 @@ Going through each skill one by one to flesh out and validate.
 
 ### Setup
 
-- [ ] `as-setup-project`
+- [x] `as-setup-project`
