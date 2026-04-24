@@ -7,7 +7,7 @@ A composable Claude Code skill library for professional software projects. Skill
 ## Install
 
 ```bash
-npx anchorstack add anchorstack/anchorstack-skills
+npx skills add mlopstapus/anchorstack-skills
 ```
 
 ---
