@@ -2,7 +2,6 @@
 name: as-lint
 version: 2.0.0
 tier: component
-status: under-review
 description: Run the project linter, auto-fix what it can, manually fix the rest.
 ---
 

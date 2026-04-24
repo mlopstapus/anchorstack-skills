@@ -2,7 +2,6 @@
 name: as-retro
 version: 2.0.0
 tier: component
-status: under-review
 description: Session retrospective — review what happened, identify friction points and clarifications the user had to provide, then update CLAUDE.md, AGENTS.md, and memory files so agents improve over time.
 ---
 

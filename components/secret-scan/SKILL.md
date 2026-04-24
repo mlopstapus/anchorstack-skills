@@ -2,7 +2,6 @@
 name: as-secret-scan
 version: 1.0.0
 tier: component
-status: under-review
 description: Scan for accidentally committed secrets — API keys, tokens, passwords, credentials. Reports findings by location and type without printing secret values, and helps remediate.
 ---
 

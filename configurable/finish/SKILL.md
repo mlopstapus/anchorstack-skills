@@ -2,7 +2,6 @@
 name: as-finish
 version: 1.0.0
 tier: configurable
-status: under-review
 description: Execute the project's finish pipeline — self-bootstraps if not yet configured.
 ---
 

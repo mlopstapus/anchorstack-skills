@@ -2,7 +2,6 @@
 name: as-sync
 version: 1.1.0
 tier: component
-status: under-review
 description: Stash, fetch, rebase on main, auto-resolve conflicts, push.
 ---
 

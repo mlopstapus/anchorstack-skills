@@ -2,7 +2,6 @@
 name: as-setup-project
 version: 2.0.0
 tier: setup
-status: under-review
 description: Initialize a project for anchorstack skills — auto-detect git config, stack, and commands, then interview to fill gaps. Writes .claude/anchorstack/project.md (read by all other skills) and bootstraps CLAUDE.md if none exists. Run with as-setup-project at project start, or re-run to update config.
 ---
 

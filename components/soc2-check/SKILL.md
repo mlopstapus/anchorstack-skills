@@ -2,7 +2,6 @@
 name: as-soc2-check
 version: 2.0.0
 tier: component
-status: under-review
 description: SOC2 compliance check — access controls, encryption, change management, logging, availability. Defaults to staged changes for pre-commit use; supports full codebase audit with report output.
 ---
 

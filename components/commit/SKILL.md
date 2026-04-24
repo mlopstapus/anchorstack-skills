@@ -2,7 +2,6 @@
 name: as-commit
 version: 1.1.0
 tier: component
-status: under-review
 description: Stage and commit changes using conventional commits format.
 ---
 

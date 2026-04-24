@@ -2,7 +2,6 @@
 name: as-hipaa-check
 version: 2.0.0
 tier: component
-status: under-review
 description: HIPAA compliance check — PHI exposure, audit trail gaps, access control, encryption. Defaults to staged changes for pre-commit use; supports full codebase audit with report output.
 ---
 

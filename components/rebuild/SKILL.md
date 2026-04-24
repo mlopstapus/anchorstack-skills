@@ -2,7 +2,6 @@
 name: as-rebuild
 version: 1.0.0
 tier: component
-status: under-review
 description: Rebuild and restart the local dev environment — uses configured command if set, otherwise auto-detects from project files.
 ---
 

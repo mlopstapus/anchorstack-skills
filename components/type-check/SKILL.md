@@ -2,7 +2,6 @@
 name: as-type-check
 version: 2.0.0
 tier: component
-status: under-review
 description: Run type checking for any language, auto-fix errors, and report results.
 ---
 

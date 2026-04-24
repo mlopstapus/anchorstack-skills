@@ -2,7 +2,6 @@
 name: as-pr
 version: 1.0.0
 tier: component
-status: under-review
 description: Create a GitHub PR with a structured template and pre-merge smoke test checklist.
 ---
 
