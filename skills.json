@@ -16,6 +16,7 @@
     { "name": "as-type-check",       "path": "components/type-check",      "tier": "component"    },
     { "name": "as-lint",             "path": "components/lint",            "tier": "component"    },
     { "name": "as-secret-scan",      "path": "components/secret-scan",    "tier": "component"    },
+    { "name": "as-test",             "path": "components/test",             "tier": "component"    },
     { "name": "as-commit",           "path": "components/commit",           "tier": "component"    },
     { "name": "as-pr",               "path": "components/pr",               "tier": "component"    },
     { "name": "as-setup-project",    "path": "setup/setup-project",        "tier": "setup"        },

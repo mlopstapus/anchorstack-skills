@@ -99,6 +99,12 @@ Components are atomic, composable steps. They're used directly or wired into the
 
 ---
 
+#### `as-test`
+
+Writes missing tests first, then runs the suite and fixes failures. For each changed file it checks whether tests exist, and if not writes them — matching the project's existing test framework and style — before running anything. When tests fail it triages each one: fix the code if the test describes correct behavior, fix the test if it was asserting an implementation detail that legitimately changed. Won't paper over a failure with a bad fix — notes anything that needs a broader decision and moves on.
+
+---
+
 #### `as-sync`
 
 Stashes local changes, fetches, rebases on main, auto-resolves conflicts where safe, then pushes. The standard "get current" step before finishing work.
