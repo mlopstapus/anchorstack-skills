@@ -81,18 +81,6 @@ The key behavior: it doesn't stop at the first broken thing. It keeps drilling u
 
 ---
 
-#### `as-tech-debt-audit`
-
-**Full codebase health check from the perspective of a senior engineer.**
-
-Runs the test suite first (failing tests are Critical by definition), then scans for: broken/missing tests, code structure issues (duplication, god objects, deep nesting, dead code), silent catches and unhandled errors, type safety gaps, performance issues (N+1 queries, missing indexes, unbounded queries), observability gaps (structured logging, request IDs, metrics), stale documentation, outdated or vulnerable dependencies, CI/CD gaps, database hygiene, surface-level security issues, and operational gaps. Produces a prioritized report at `context/tech-debt-audit-<date>.md`.
-
-After the report, offers to convert findings into backlog items — creates a tech-debt epic and writes feature files for selected findings.
-
-*Depends on: `as-backlog` (for the optional backlog conversion step)*
-
----
-
 ### Components — pipeline steps
 
 Components are atomic, composable steps. They're used directly or wired into the `as-finish` pipeline.
