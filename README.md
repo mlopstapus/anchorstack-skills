@@ -159,18 +159,23 @@ Session retrospective. Reviews what happened in the session, identifies friction
 
 **The "done" command. Runs your project's finish pipeline.**
 
-On first run, self-bootstraps: presents an interactive picker to choose and order which components run (sync, type-check, lint, tests, HIPAA check, etc.) and write custom shell steps. Saves the pipeline to `.claude/anchorstack/finish.md`. On subsequent runs, executes each step in order and reports pass/fail.
+On first run, self-bootstraps: presents an interactive picker to choose and order which components run (sync, type-check, lint, tests, HIPAA check, etc.) and write custom shell steps. Saves the pipeline to `.claude/anchorstack/project.json`. On subsequent runs, executes each step in order and reports pass/fail.
 
 Re-run `/as-finish` to change the pipeline at any time.
 
-Example `finish.md`:
-```yaml
-steps:
-  - invoke: as-sync
-  - invoke: as-type-check
-  - invoke: as-lint
-  - run: npm test
-  - invoke: as-secret-scan
+Example `project.json`:
+```json
+{
+  "finish": {
+    "pipeline": [
+      { "invoke": "as-sync" },
+      { "invoke": "as-type-check" },
+      { "invoke": "as-lint" },
+      { "run": "npm test" },
+      { "invoke": "as-secret-scan" }
+    ]
+  }
+}
 ```
 
 *Depends on: `as-setup-project` (for `project.md` context)*
@@ -217,7 +222,7 @@ anchorstack contribute <skill>    # open a PR with your local changes upstream
 .claude/
   anchorstack/
     project.md      ← stack, compliance, commands (written by as-setup-project)
-    finish.md       ← finish pipeline steps (written by as-finish)
+    project.json    ← finish pipeline steps and structured config (written by as-finish)
     manifest.json   ← installed versions and hashes
 
 context/            ← architecture docs, RCA reports, audit reports, decisions

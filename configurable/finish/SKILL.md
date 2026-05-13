@@ -1,8 +1,8 @@
 ---
 name: as-finish
-version: 1.0.0
+version: 2.0.0
 tier: configurable
-description: Execute the project's finish pipeline — self-bootstraps if not yet configured.
+description: Execute the project's finish pipeline — self-bootstraps if not yet configured. Pipeline steps are stored in .claude/anchorstack/project.json.
 ---
 
 # Finish
@@ -11,11 +11,36 @@ Execute the finish pipeline for this project.
 
 ## Step 1 — Check configuration
 
-Read `.claude/anchorstack/finish.md`.
+Attempt to read `.claude/anchorstack/project.json`.
 
-If the file does not exist or contains no steps, run the setup flow below before proceeding.
+### If `project.json` is malformed JSON
 
-### Setup flow (first run only)
+Stop and report:
+
+```
+project.json is malformed and cannot be read. Fix the file and re-run /as-finish.
+```
+
+Do not proceed.
+
+### If `project.json` does not exist, or exists but has no `finish.pipeline` key
+
+Check whether `.claude/anchorstack/finish.md` exists.
+
+If it does, offer migration:
+
+```
+Found an existing finish pipeline in .claude/anchorstack/finish.md.
+Migrate it to project.json? (yes / no / reconfigure from scratch)
+```
+
+- **Yes**: read the ordered steps from `finish.md`, write them to `project.json` under `finish.pipeline` (see format below), delete `finish.md`, then continue to Step 2.
+- **Reconfigure from scratch**: run the setup flow, then delete `finish.md` after saving.
+- **No**: run the setup flow without deleting `finish.md`.
+
+If `finish.md` does not exist either, run the setup flow.
+
+### Setup flow (first run or reconfigure)
 
 Discover available components by listing the `SKILL.md` files under `.claude/skills/components/`. Read the `name` and `description` frontmatter from each.
 
@@ -33,26 +58,31 @@ The finish pipeline hasn't been configured yet. Here are the available component
 Which do you want to include? You can also add custom shell commands (e.g. npm test, docker compose restart).
 ```
 
-Take their response, confirm the order, then write `.claude/anchorstack/finish.md`:
+Take their response and confirm the order.
 
-```markdown
-# Finish Pipeline
+If `.claude/anchorstack/project.json` already exists with other keys, merge the `finish` key in — do not overwrite unrelated content. If the file does not exist, create `.claude/anchorstack/` if needed, then create the file.
 
-This file is managed by as-finish. Re-run /as-finish and choose "reconfigure" to update it.
+Write the confirmed pipeline to `.claude/anchorstack/project.json`:
 
----
-
-steps:
-  - invoke: as-sync
-  - invoke: as-lint
-  - run: npm test
+```json
+{
+  "finish": {
+    "pipeline": [
+      { "invoke": "as-sync" },
+      { "invoke": "as-lint" },
+      { "run": "npm test" }
+    ]
+  }
+}
 ```
+
+Each step is either `{ "invoke": "<skill-name>" }` or `{ "run": "<shell command>" }`.
 
 Confirm what was written, then continue to Step 2.
 
 ## Step 2 — Show pipeline
 
-Print the steps that will run:
+Read `finish.pipeline` from `.claude/anchorstack/project.json` and print the steps:
 
 ```
 Finish pipeline (N steps):
@@ -69,9 +99,17 @@ Run steps in order. For each step:
 
 ### `invoke: <skill-name>`
 
+Before invoking, check that the skill exists under `.claude/skills/`. If not found, stop and report:
+
+```
+✗ Pipeline halted at step N (invoke: <skill-name>)
+Reason: skill not installed
+```
+
 Execute the named skill by reading its `SKILL.md` and following its instructions completely. The skill must complete before moving to the next step.
 
 On failure, stop and report:
+
 ```
 ✗ Pipeline halted at step N (invoke: <skill-name>)
 Reason: <what the skill reported>
@@ -86,6 +124,7 @@ Execute the shell command. A non-zero exit code is a failure — stop the pipeli
 ## Step 4 — Report
 
 On success:
+
 ```
 ✓ Finish pipeline complete — all N steps passed
 
@@ -95,6 +134,7 @@ On success:
 ```
 
 On failure:
+
 ```
 ✗ Finish pipeline failed at step N
 
@@ -106,4 +146,5 @@ On failure:
 ## Notes
 
 - Read `.claude/anchorstack/project.md` before starting so invoked skills have project context
+- Pipeline steps are stored at `finish.pipeline` in `.claude/anchorstack/project.json`
 - To reconfigure, run `/as-finish` and respond "reconfigure" at the proceed prompt
