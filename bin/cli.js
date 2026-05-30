@@ -2,7 +2,7 @@
 import * as p from '@clack/prompts';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { createHash } from 'crypto';
-import { execSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import { join } from 'path';
 import chalk from 'chalk';
 
@@ -164,7 +164,13 @@ async function runContribute(skillName) {
 
   const branch = `contrib/${skillName}-${Date.now()}`;
   try {
-    execSync(`gh pr create --repo anchorstack/anchorstack-skills --head ${branch} --title "contrib: ${skillName}" --body "Contributed local changes to ${skillName} via anchorstack contribute"`, { stdio: 'inherit' });
+    spawnSync('gh', [
+      'pr', 'create',
+      '--repo', 'anchorstack/anchorstack-skills',
+      '--head', branch,
+      '--title', `contrib: ${skillName}`,
+      '--body', `Contributed local changes to ${skillName} via anchorstack contribute`,
+    ], { stdio: 'inherit' });
   } catch {
     p.log.warn('Could not open PR automatically. Push your changes and open a PR at:');
     p.log.info('https://github.com/anchorstack/anchorstack-skills/pulls');

@@ -2,3 +2,5 @@ node_modules/
 beary-scratchpad/
 research-output/
 .DS_Store
+*.log
+.env*

@@ -29,7 +29,15 @@
 - [x] Feature meets measurable outcomes defined in Success Criteria
 - [x] No implementation details leak into specification
 
+## Constitution Compliance (added 2026-05-30)
+
+- [x] Security by Default — FR-018 (no secrets in output), edge case covers secrets found in logs
+- [x] Token Efficiency — FR-015/FR-020 (read project.md, degrade gracefully), NFR-006
+- [x] Provider-Agnostic — NFR-005 (neutral tool language), SC-007 (multi-provider success criterion)
+- [x] Template-Driven — FR-010 (report from template), FR-009 (predictable dated filename)
+- [x] Skill Composability — FR-012 (registry), FR-019 (declared inputs/outputs), FR-020 (graceful degradation)
+
 ## Notes
 
-- The repository does not currently include `.specify/` scripts, so this checklist was created manually using the Spec-Kit structure.
-- No open clarification questions are required before planning. The only notable assumption is that the existing `as-rca` skill should be updated or validated rather than duplicated.
+- All items pass. Spec is ready for `/speckit-plan`.
+- The only notable assumption: the existing `as-rca` skill should be updated or validated rather than duplicated.
