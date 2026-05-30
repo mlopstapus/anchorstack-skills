@@ -6,7 +6,8 @@
     "anchorstack": "./bin/cli.js"
   },
   "scripts": {
-    "test": "echo \"No tests yet\""
+    "test": "echo \"No tests yet\"",
+    "sync": "node scripts/sync-skills.js"
   },
   "dependencies": {
     "@clack/prompts": "^0.9.1",
