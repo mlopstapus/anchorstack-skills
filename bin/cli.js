@@ -29,11 +29,11 @@ function hashFile(filePath) {
   return createHash('sha256').update(content).digest('hex').slice(0, 12);
 }
 
-function skillInstallPath(skillPath, global = false) {
+function skillInstallPath(skillName, global = false) {
   const base = global
     ? join(process.env.HOME, '.claude', 'skills')
     : join(process.cwd(), '.claude', 'skills');
-  return join(base, skillPath.split('/').pop());
+  return join(base, skillName);
 }
 
 const [,, command, ...args] = process.argv;
@@ -59,7 +59,7 @@ async function runList() {
 
   const rows = registry.map(skill => {
     const entry = manifest.skills?.[skill.name];
-    const installPath = skillInstallPath(skill.path);
+    const installPath = skillInstallPath(skill.name);
     const installed = existsSync(join(installPath, 'SKILL.md'));
     const currentHash = installed ? hashFile(join(installPath, 'SKILL.md')) : null;
     const status = !installed
@@ -111,7 +111,7 @@ async function runUpdate() {
       continue;
     }
 
-    const installPath = skillInstallPath(skill.path);
+    const installPath = skillInstallPath(skill.name);
     const skillMd = join(installPath, 'SKILL.md');
 
     try {
