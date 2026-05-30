@@ -6,6 +6,7 @@ This file is managed by as-finish. Re-run /as-finish and choose "reconfigure" to
 
 steps:
   - invoke: as-sync
+  - run: npm test
   - invoke: as-lint
   - invoke: as-secret-scan
   - invoke: as-security-scan
