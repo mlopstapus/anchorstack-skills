@@ -2,7 +2,7 @@
 name: as-rca
 version: 3.0.0
 tier: universal
-description: Root cause analysis — actively investigates a broken project by reading code, reproducing the failure locally, and drilling down the causation chain until the true root cause is found. Not a template — an investigation. Use this whenever something is broken and the cause isn't obvious: errors, crashes, wrong behavior, failing tests, broken deploys, or anything where "it worked before and now it doesn't". Trigger on any mention of debugging, something being broken, an error that needs diagnosis, or a fix that keeps not working.
+description: Root cause analysis — actively investigates a broken project by reading code, reproducing the failure locally, and drilling down the causation chain until the true root cause is found. Not a template — an investigation. Use this whenever something is broken and the cause is not obvious (errors, crashes, wrong behavior, failing tests, broken deploys, or anything where it worked before and now it does not). Trigger on any mention of debugging, something being broken, an error that needs diagnosis, or a fix that keeps not working.
 ---
 
 # Root Cause Analysis
