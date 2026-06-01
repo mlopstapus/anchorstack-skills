@@ -5,6 +5,7 @@
   "skills": [
     { "name": "as-rca",              "path": "universal/rca",              "tier": "universal"    },
     { "name": "as-architect",        "path": "universal/architect",        "tier": "universal"    },
+    { "name": "as-understand-feature", "path": "universal/understand-feature", "tier": "universal" },
     { "name": "as-backlog",          "path": "universal/backlog",          "tier": "universal"    },
     { "name": "as-tenets",           "path": "universal/tenets",           "tier": "universal"    },
     { "name": "as-sync",             "path": "components/sync",            "tier": "component"    },
