@@ -1,11 +1,11 @@
 ---
-name: as-understand-feature
+name: as-teardown
 version: 1.0.0
 tier: universal
-description: Feature understanding deep dive that investigates an existing feature across code, UI, workflows, data, operations, and known problems, then writes a durable report. Use this when someone asks to understand, map, document, audit, or explain a feature before changing it.
+description: Feature teardown deep dive that investigates an existing feature across code, UI, workflows, data, operations, and known problems, then writes a durable report. Use this when someone asks to understand, map, document, audit, or explain a feature before changing it.
 ---
 
-# Understand Feature
+# Teardown
 
 This skill creates a working-quality feature brief for an existing application feature. The output should be useful to an engineer who needs to modify the feature without inheriting vague context, missed workflows, or hidden risk.
 
@@ -113,7 +113,7 @@ Separate confirmed issues from suspected risks. Tie each confirmed issue to evid
 Use this structure:
 
 ```markdown
-# Feature Brief: <Feature Name>
+# Feature Teardown: <Feature Name>
 
 **Date:** YYYY-MM-DD
 **Status:** Investigated
